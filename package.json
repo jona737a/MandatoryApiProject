@@ -1,0 +1,22 @@
+{
+  "name": "first",
+  "version": "1.0.0",
+  "description": "First api project",
+  "main": "server.js",
+  "scripts": {
+    "start-dev": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "jesm",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.1",
+    "cross-env": "^7.0.3",
+    "dotenv-flow": "^3.2.0",
+    "express": "^4.17.2",
+    "joi": "^17.6.0",
+    "mongodb": "^4.3.1",
+    "mongoose": "^6.1.8"
+  }
+}
