@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const product = require("../models/products")
+const game = require("../models/game")
 const { verifyToken } = require("../validation")
 
 module.exports = router;
@@ -10,7 +10,7 @@ module.exports = router;
 router.post("/", verifyToken, (req, res) => {
     data = req.body;
 
-    product.insertMany(data)
+    game.insertMany(data)
         .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }) })
 });
@@ -18,20 +18,16 @@ router.post("/", verifyToken, (req, res) => {
 //Read all
 
 router.get("/", (req, res) => {
-    product.find()
-        .then(data => {
-
-            res.send(mapArr(data));
-        })
-        .catch(err => {
-            res.status(500).send({ message: err.message })
-        })
+    game.find()
+        .then(data => { res.send(mapArr(data)); })
+        .catch(err => { res.status(500).send({ message: err.message }) })
 })
 
 //Read in stock
 
-router.get("/instock/:status", (req, res) => {
-    product.find({ inStock: req.params.status })
+router.get("/category/:name", (req, res) => {
+    const category = req.params.name
+    game.find({ category: category })
         .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }) })
 })
@@ -47,7 +43,7 @@ router.get("/price/:operator/:price", (req, res) => {
     } else if (operator == "lt") {
         filter = { $lte: findPrice }
     }
-    product.find({ price: filter })
+    game.find({ price: filter })
         .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }) })
 
@@ -58,7 +54,7 @@ router.get("/price/:operator/:price", (req, res) => {
 //Read from id
 
 router.get("/:id", (req, res) => {
-    product.findById(req.params.id)
+    game.findById(req.params.id)
         .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }) })
 })
@@ -69,7 +65,7 @@ router.put("/:id", (req, res) => {
     const id = req.params.id;
 
 
-    product.findByIdAndUpdate(id, req.body)
+    game.findByIdAndUpdate(id, req.body)
         .then(data => {
             if (!data) {
                 res.status(404)._construct({ message: "Cannot update product with id:" + id })
@@ -87,7 +83,7 @@ router.delete("/:id", (req, res) => {
     const id = req.params.id;
 
 
-    product.findByIdAndDelete(id)
+    game.findByIdAndDelete(id)
         .then(data => {
             if (!data) {
                 res.status(404)._construct({ message: "Cannot update product with id:" + id })
@@ -98,6 +94,7 @@ router.delete("/:id", (req, res) => {
         })
         .catch(err => { res.status(500).send({ message: err.message }) })
 })
+
 
 function mapArr(obj) {
     let outputArr = obj.map(element => {

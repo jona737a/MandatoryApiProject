@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const app = express();
 
 //routes
-const productRoutes = require("./routes/product");
+const productRoutes = require("./routes/games");
 const userRoutes = require("./routes/auth")
 
 
@@ -25,12 +25,9 @@ mongoose.connect(
 mongoose.connection.once('open', () => console.log("connected to mongoDB"));
 
 //routes
-app.get("/api/welcome", (req, res) => {
-    res.status(200).send({ message: "Welcome to the MEN RESTful API" })
-})
-
 //CRUD
-app.use("/api/products", productRoutes);
+app.use("/api/games", productRoutes);
+//Login
 app.use("/api/user", userRoutes);
 
 

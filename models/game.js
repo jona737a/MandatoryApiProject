@@ -4,11 +4,13 @@ const schema = mongoose.Schema;
 
 
 //Mongoose schema for structuring data
-let productSchema = new schema({
+let gameSchema = new schema({
     name: {type: String},
     description: {type: String},
     price: {type: Number},
-    inStock: {type: Boolean},
+    developer: {type: String},
+    publisher: {type: String},
+    category: {type: Array},
 });
 
-module.exports = mongoose.model("product", productSchema);
+module.exports = mongoose.model("game", gameSchema);
