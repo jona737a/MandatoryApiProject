@@ -31,22 +31,6 @@ router.get("/category/:name", (req, res) => {
         .catch(err => { res.status(500).send({ message: err.message }) })
 })
 
-//Read price
-
-router.get("/price/:operator/:price", (req, res) => {
-    const operator = req.params.operator;
-    const findPrice = req.params.price;
-    let filter = {}
-    if (operator == "gt") {
-        filter = { $gte: findPrice }
-    } else if (operator == "lt") {
-        filter = { $lte: findPrice }
-    }
-    game.find({ price: filter })
-        .then(data => { res.send(data); })
-        .catch(err => { res.status(500).send({ message: err.message }) })
-})
-
 //Read from id
 
 router.get("/:id", (req, res) => {

@@ -2,6 +2,12 @@ const express = require("express");
 const req = require("express/lib/request");
 const mongoose = require("mongoose");
 const app = express();
+const swaggerUi = require("swagger-ui-express");
+const yaml = require("yamljs")
+
+//Setup swagger
+const swaggerDefinition = yaml.load('./swagger.yaml');
+app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDefinition));
 
 //routes
 const productRoutes = require("./routes/games");

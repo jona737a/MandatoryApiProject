@@ -1,0 +1,222 @@
+openapi: 3.0.0
+info:
+  title: Mandatory API project
+  description: MongoDB ExpressJS NodeJS REST API
+  version: 1.0.0
+servers:
+  - url: http://localhost:4000/api/
+    description: Localhost development server 
+components:
+  securitySchemes:
+    ApiKeyAuth:        # arbitrary name for the security scheme
+      type: apiKey
+      in: header       # can be "header", "query" or "cookie"
+      name: auth-token
+
+  schemas:
+    Game:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+        developer:
+          type: string
+        publisher:
+          type: string
+        category:
+          type: array
+    
+    User:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+
+paths:
+
+  /user/register:
+    post:
+      summary: Register a new User
+      description: Register a new User in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+
+      responses:
+        201:
+          description: User created succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  _id:
+                    type: string
+
+  /user/login:
+    post:
+      summary: Login a User
+      description: Login a User in order to get JWT token (auth-token)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      
+      responses:
+        200:
+          description: User logged in succesfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  data:
+                    type: string
+
+
+  /games:
+    get:
+      summary: Retrieves a list of games
+      description: Retrieves a list of games as JSON objects.
+      responses:
+        200:
+          description: A list of game JSON objects in an array.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Game"
+    
+    post:
+      summary: Create a new game
+      description: Create a new game
+      security:
+        - ApiKeyAuth: []      
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Game"
+
+      responses:
+        201:
+          description: Game created succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+  
+  /games/{id}:
+    get:
+      summary: Specific game
+      description: Retrieves a specific gmae based on it id.
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      responses:
+        200:
+          description: A game in the format of a JSON object.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Game"
+   
+    put:
+      summary: Updates a specific game
+      description: Updates a specific game based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Game"
+
+      responses:
+        201:
+          description: Game updated succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+
+    delete:
+      summary: Deletes a specific game
+      description: Deletes a specific game based on it id
+      security:
+        - ApiKeyAuth: []            
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: MongoDB id
+          schema:
+            type: string      
+      responses:
+        201:
+          description: Game deleted succesfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Game"
+
+  /games/category/{name}:
+    get:
+      summary: All games with category
+      description: Retrieves all games based on the named category.
+      parameters:
+        - in: path
+          name: name
+          required: true
+          description: Name of game category
+          schema:
+            type: string
+      responses:
+        200:
+          description: Found products.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Game"
