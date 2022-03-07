@@ -9,7 +9,6 @@ module.exports = router;
 
 router.post("/", verifyToken, (req, res) => {
     data = req.body;
-
     game.insertMany(data)
         .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }) })
@@ -46,9 +45,6 @@ router.get("/price/:operator/:price", (req, res) => {
     game.find({ price: filter })
         .then(data => { res.send(data); })
         .catch(err => { res.status(500).send({ message: err.message }) })
-
-
-
 })
 
 //Read from id
@@ -63,8 +59,6 @@ router.get("/:id", (req, res) => {
 
 router.put("/:id", (req, res) => {
     const id = req.params.id;
-
-
     game.findByIdAndUpdate(id, req.body)
         .then(data => {
             if (!data) {
@@ -81,8 +75,6 @@ router.put("/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
     const id = req.params.id;
-
-
     game.findByIdAndDelete(id)
         .then(data => {
             if (!data) {
