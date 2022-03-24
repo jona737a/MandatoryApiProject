@@ -5,7 +5,9 @@ info:
   version: 1.0.0
 servers:
   - url: http://localhost:4000/api/
-    description: Localhost development server 
+    description: Localhost development server
+  - url: https://mandatory-api-project.herokuapp.com/api/
+    description: Live server
 components:
   securitySchemes:
     ApiKeyAuth:        # arbitrary name for the security scheme
